@@ -1,6 +1,7 @@
-const cloudinary = require("cloudinary").v2;
-const fs = require("fs");
-const { cloudinaryApiKey, cloudinaryCloudName, cloudinarySecret } = require("../config/index.js");
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+// import { unlink } from "fs/promises";
+import { cloudinaryApiKey, cloudinaryCloudName, cloudinarySecret } from "../core/config/config.js";
 
 cloudinary.config({
   cloud_name: cloudinaryCloudName,
@@ -8,21 +9,17 @@ cloudinary.config({
   api_secret: cloudinarySecret,
 });
 
-const cloudinaryUpload = async (filePath, public_id, folder) => {
-  let uploadImage;
-
+export const cloudinaryUpload = async (filePath, public_id, folder) => {
   try {
-    uploadImage = await cloudinary.uploader.upload(filePath, {
+    const uploadImage = await cloudinary.uploader.upload(filePath, {
       public_id,
       folder,
     });
 
     fs.unlinkSync(filePath);
+    return uploadImage;
   } catch (error) {
     fs.unlinkSync(filePath);
     return "file upload failed";
   }
-  return uploadImage;
 };
-
-module.exports = { cloudinaryUpload };

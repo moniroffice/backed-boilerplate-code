@@ -1,4 +1,5 @@
-exports.verificationCodeTemplate = (code) => `
+// ✅ ESM
+const verificationCodeTemplate = (code) => `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
     <h1 style="color: #333; text-align: center;">Verification Code</h1>
     <p style="font-size: 16px; color: #555;">Hello,</p>
@@ -12,3 +13,4 @@ exports.verificationCodeTemplate = (code) => `
   </div>
 `;
 
+export default verificationCodeTemplate;
