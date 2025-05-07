@@ -7,7 +7,7 @@ import {
   verifyCode,
   resetPassword,
   logoutUser,
-} from './auth.controller.js';
+} from './admin.controller.js';
 
 import { userAdminSellerMiddleware } from '../../core/middlewares/authMiddleware.js';
 

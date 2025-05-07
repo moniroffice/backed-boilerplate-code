@@ -1,15 +1,14 @@
 import jwt from 'jsonwebtoken';
-import config from '../config/config.js';
+import {accessTokenSecrete} from '../../core/config/config.js';
 import RoleType from '../../lib/types.js';
 
 
-
-const userMiddleware = (req, res, next) => {
+export const userMiddleware = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'No token, auth denied' });
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    const decoded = jwt.verify(token, accessTokenSecrete);
     req.user = decoded;
 
     if (req.user.role !== RoleType.USER) {
@@ -22,12 +21,16 @@ const userMiddleware = (req, res, next) => {
   }
 };
 
-const adminMiddleware = (req, res, next) => {
+
+export const adminMiddleware = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
+  console.log(token );
+  
   if (!token) return res.status(401).json({ message: 'No token, auth denied' });
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    console.log(accessTokenSecrete)
+    const decoded = jwt.verify(token, accessTokenSecrete);
     req.user = decoded;
 
     if (req.user.role !== RoleType.ADMIN) {
@@ -36,20 +39,23 @@ const adminMiddleware = (req, res, next) => {
 
     next();
   } catch (err) {
+    console.log(err);
+    
     res.status(401).json({ message: 'Token is not valid' });
   }
 };
 
-const superAdminMiddleware = (req, res, next) => {
+
+export const sellerMiddleware = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'No token, auth denied' });
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    const decoded = jwt.verify(token, accessTokenSecrete);
     req.user = decoded;
 
-    if (req.user.role !== RoleType.SUPER_ADMIN) {
-      return res.status(403).json({ message: 'SuperAdmin access only' });
+    if (req.user.role !== RoleType.SELLER) {
+      return res.status(403).json({ message: 'Seller access only' });
     }
 
     next();
@@ -58,16 +64,15 @@ const superAdminMiddleware = (req, res, next) => {
   }
 };
 
-const adminSuperAdminMiddleware = (req, res, next) => {
+export const adminSellerMiddleware = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'No token, auth denied' });
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    const decoded = jwt.verify(token, accessTokenSecrete);
     req.user = decoded;
-
-    if (req.user.role !== RoleType.ADMIN || req.user.role !== RoleType.SUPER_ADMIN) {
-      return res.status(403).json({ message: 'Admin or SuperAdmin access only' });
+    if (req.user.role !== RoleType.ADMIN && req.user.role !== RoleType.SELLER) {
+      return res.status(403).json({ message: 'Admin or Seller access only' });
     }
 
     next();
@@ -76,20 +81,20 @@ const adminSuperAdminMiddleware = (req, res, next) => {
   }
 };
 
-const userAdminSuperAdminMiddleware = (req, res, next) => {
+export const userAdminSellerMiddleware = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'No token, auth denied' });
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    const decoded = jwt.verify(token, accessTokenSecrete);
     req.user = decoded;
 
     if (
       req.user.role !== RoleType.USER ||
       req.user.role !== RoleType.ADMIN ||
-      req.user.role !== RoleType.SUPER_ADMIN
+      req.user.role !== RoleType.SELLER
     ) {
-      return res.status(403).json({ message: 'User, Admin or SuperAdmin access only' });
+      return res.status(403).json({ message: 'User, Admin or Seller access only' });
     }
 
     next();
@@ -98,5 +103,5 @@ const userAdminSuperAdminMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = { userMiddleware, adminMiddleware, superAdminMiddleware, adminSuperAdminMiddleware,userAdminSuperAdminMiddleware };
+
 
