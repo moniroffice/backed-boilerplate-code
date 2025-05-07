@@ -56,3 +56,4 @@ The boilerplate includes unit tests using Jest and Supertest. The tests cover th
 - **DELETE /user/:id**: Delete a user.
 - **POST /user/upload-avatar**: Upload a user's avatar.
 # lharris_backend
+# lharris_backend
