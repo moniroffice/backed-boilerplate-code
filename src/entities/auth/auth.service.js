@@ -108,7 +108,7 @@ export const verifyCodeService = async ({ email, otp }) => {
 
   if (!user.otp || !user.otpExpires) throw new Error('Otp not found');
 
-  if (user.otp !== otp || new Date() > user.otpExpires) throw new Error('Invalid or expired otp')
+  if (Number(user.otp) !== Number(otp) || new Date() > user.otpExpires) throw new Error('Invalid or expired otp')
 
   user.otp = null;
   user.otpExpires = null;
