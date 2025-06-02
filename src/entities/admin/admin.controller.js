@@ -1,5 +1,7 @@
 import { generateResponse } from '../../lib/responseFormate.js';
-import User from './auth.model.js';
+// import User from './auth.model.js';
+import User from '../auth/auth.model.js';
+
 import {
   registerUserService,
   loginUserService,
@@ -7,7 +9,7 @@ import {
   forgetPasswordService,
   verifyCodeService,
   resetPasswordService
-} from './auth.service.js';
+} from './admin.service.js';
 
 export const registerUser = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;

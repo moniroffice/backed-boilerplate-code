@@ -1,4 +1,4 @@
-import User from './auth.model.js';
+import User from '../auth/auth.model.js';
 import jwt from 'jsonwebtoken';
 import { refreshTokenSecrete, emailExpires } from '../../core/config/config.js';
 import sendEmail from '../../lib/sendEmail.js';
